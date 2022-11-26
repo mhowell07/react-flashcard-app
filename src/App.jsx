@@ -20,8 +20,20 @@ function App() {
     })
   }, [])
 
-  useEffect(() => {
-    axios.get('https://opentdb.com/api.php?amount=10')
+  const decodeString = (str) => {
+    const textArea = document.createElement('textarea')
+    textArea.innerHTML = str
+    return textArea.value
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios.get('https://opentdb.com/api.php', {
+      params: {
+        amount: amountEl.current.value,
+        category: categoryEl.current.value
+      }
+    })
     .then(res => {
       setFlashcards(res.data.results.map((questionItem, index) => {
         const answer = decodeString(questionItem.correct_answer)
@@ -37,23 +49,11 @@ function App() {
         }
       }))
       console.log(res.data)
-      
     })
-  }, [])
-
-  const decodeString = (str) => {
-    const textArea = document.createElement('textarea')
-    textArea.innerHTML = str
-    return textArea.value
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
   }
 
   return (
-    <>
+    <div className="App">
       <form className="header" onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor='category'>Category</label>
@@ -78,10 +78,10 @@ function App() {
           <button className="btn">Generate</button>
         </div>
       </form>
-      <div className="App">
+      <div className="container">
         <FlashcardList flashcards={flashcards} />
       </div>
-    </>
+    </div>
   )
 }
 
