@@ -1,4 +1,4 @@
-import Flashcard from "./FlashCard"
+import Flashcard from "./Flashcard"
 
 const FlashcardList = ({ flashcards }) => {
   return (
